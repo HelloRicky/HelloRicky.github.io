@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ricky Liu — What Can This Human Do?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --obsidian: #080c10;
+    --void: #0d1117;
+    --surface: #111820;
+    --surface2: #16202c;
+    --border: #1e2d3d;
+    --amber: #f0a500;
+    --amber-dim: #c47d00;
+    --amber-glow: rgba(240,165,0,0.12);
+    --cyan: #4dd9e0;
+    --cyan-dim: rgba(77,217,224,0.15);
+    --text: #d4dde8;
+    --text-muted: #5c7080;
+    --text-bright: #eef2f7;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--obsidian);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ============================================================
+     CUSTOM CURSOR
+  ============================================================ */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--amber);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(240,165,0,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, opacity 0.3s;
+  }
+
+  body:has(a:hover) .cursor,
+  body:has(button:hover) .cursor { width: 16px; height: 16px; }
+  body:has(a:hover) .cursor-ring,
+  body:has(button:hover) .cursor-ring { width: 48px; height: 48px; opacity: 0.4; }
+
+  /* ============================================================
+     STAR FIELD
+  ============================================================ */
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ============================================================
+     NAV
+  ============================================================ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(8,12,16,0.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--amber);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--amber); }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 10vw;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 1.0;
+    color: var(--text-bright);
+    letter-spacing: -0.01em;
+    max-width: 16ch;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .hero-terminal {
+    margin-top: 2.5rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .hero-terminal::before {
+    content: '>';
+    color: var(--amber);
+  }
+
+  .typed-text { }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 8px; height: 1.1em;
+    background: var(--amber);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2s forwards;
+  }
+
+  .hero-scroll span {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--amber), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ============================================================
+     SECTIONS COMMON
+  ============================================================ */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 8rem 10vw;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 30px; height: 1px;
+    background: var(--amber);
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    color: var(--text-bright);
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+
+  /* ============================================================
+     SKILLS SECTION — HEXAGONAL CONSTELLATION
+  ============================================================ */
+  #skills {
+    background: linear-gradient(to bottom, transparent, rgba(13,17,23,0.8), transparent);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+  }
+
+  .skill-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    overflow: hidden;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--amber-glow);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .skill-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--amber-dim);
+    box-shadow: 0 0 30px var(--amber-glow), 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  .skill-card:hover::before { opacity: 1; }
+
+  .skill-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .skill-name {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .skill-tags {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     EXPERIENCE SECTION — TIMELINE
+  ============================================================ */
+  .timeline {
+    position: relative;
+    max-width: 700px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--amber), var(--border), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 3.5rem 2.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 6px;
+    width: 9px; height: 9px;
+    background: var(--obsidian);
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+  }
+
+  .timeline-period {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-role {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text-bright);
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-company {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ============================================================
+     PROJECTS SECTION — FLIP CARDS
+  ============================================================ */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+  }
+
+  .project-card {
+    height: 300px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+
+  .project-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .project-card.flipped .project-inner { transform: rotateY(180deg); }
+
+  .project-front,
+  .project-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .project-back {
+    transform: rotateY(180deg);
+    background: var(--surface2);
+    border-color: var(--amber-dim);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .project-front {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .project-front::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,12,16,0.95) 30%, transparent);
+    z-index: 1;
+  }
+
+  .project-bg {
+    position: absolute;
+    inset: 0;
+    font-size: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.08;
+    transition: opacity 0.3s;
+    line-height: 1;
+  }
+
+  .project-card:hover .project-bg { opacity: 0.14; }
+
+  .project-front-content { position: relative; z-index: 2; }
+
+  .project-type {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-title-f {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--text-bright);
+    line-height: 1.1;
+  }
+
+  .project-hint {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .project-back-title {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--amber);
+    margin-bottom: 0.8rem;
+  }
+
+  .project-back-desc {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    text-decoration: none;
+    border: 1px solid var(--amber-dim);
+    padding: 0.5rem 1rem;
+    transition: background 0.2s, color 0.2s;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    align-self: flex-start;
+  }
+
+  .project-link:hover { background: var(--amber); color: var(--obsidian); }
+
+  .flip-back-btn {
+    background: none;
+    border: none;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    cursor: none;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    align-self: flex-start;
+    transition: color 0.2s;
+  }
+
+  .flip-back-btn:hover { color: var(--text); }
+
+  /* ============================================================
+     CONTACT SECTION
+  ============================================================ */
+  #contact {
+    text-align: left;
+    padding-bottom: 6rem;
+  }
+
+  .contact-grid {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  }
+
+  .contact-link:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: var(--amber-glow);
+  }
+
+  .contact-icon { font-size: 1.1rem; }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 10vw;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ============================================================
+     DIVIDERS
+  ============================================================ */
+  .divider {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--amber-dim), transparent);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============================================================
+     ANIMATIONS
+  ============================================================ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50%       { opacity: 1;   transform: scaleY(1.15); }
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(var(--r)) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(var(--r)) rotate(-360deg); }
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+  ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     GLITCH EFFECT on hero title
+  ============================================================ */
+  .glitch {
+    position: relative;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    color: var(--text-bright);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    pointer-events: none;
+  }
+
+  .glitch::before {
+    color: var(--cyan);
+    clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+    animation: glitch1 4s infinite step-end;
+    opacity: 0.6;
+  }
+
+  .glitch::after {
+    color: var(--amber);
+    clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
+    animation: glitch2 4s infinite step-end;
+    opacity: 0.5;
+  }
+
+  @keyframes glitch1 {
+    0%, 94%, 100% { transform: none; opacity: 0; }
+    95% { transform: translate(-3px, 1px); opacity: 0.6; }
+    96% { transform: translate(3px, -1px); opacity: 0.6; }
+    97% { transform: none; opacity: 0; }
+    98% { transform: translate(-2px, 2px); opacity: 0.6; }
+  }
+
+  @keyframes glitch2 {
+    0%, 92%, 100% { transform: none; opacity: 0; }
+    93% { transform: translate(3px, -2px); opacity: 0.5; }
+    94% { transform: translate(-3px, 1px); opacity: 0.5; }
+    95% { transform: none; opacity: 0; }
+  }
+
+  /* ============================================================
+     NOISE OVERLAY
+  ============================================================ */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 500;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    section { padding: 5rem 6vw; }
+    #hero { padding: 0 6vw; }
+    .projects-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+  }
+
+  /* Scanline effect */
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Amber grid background */
+  #skills::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(240,165,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,165,0,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<canvas id="stars-canvas"></canvas>
+
+<nav>
+  <a href="#hero" class="nav-logo">RL</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero">
+  <p class="hero-eyebrow">// Human Profile: Liu, Ricky — v1.0</p>
+  <h1 class="hero-title glitch" data-text="What Can This Human Do?">
+    What Can This <em>Human</em> Do?
+  </h1>
+  <div class="hero-terminal">
+    <span class="typed-text" id="typed"></span><span class="cursor-blink"></span>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     SKILLS
+============================================================ -->
+<section id="skills">
+  <p class="section-label">Capabilities</p>
+  <h2 class="section-title reveal">A rare combination<br>of builder + thinker.</h2>
+  <div class="skills-grid">
+
+    <div class="skill-card reveal">
+      <span class="skill-icon">🗄️</span>
+      <p class="skill-name">Data Engineering</p>
+      <p class="skill-desc">Architecting pipelines that turn raw chaos into clean, queryable truth.</p>
+      <div class="skill-tags">
+        <span class="tag">Spark</span>
+        <span class="tag">dbt</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Airflow</span>
+        <span class="tag">Snowflake</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal">
+      <span class="skill-icon">🤖</span>
+      <p class="skill-name">AI / ML</p>
+      <p class="skill-desc">Building intelligent systems — from LLM integrations to health AI products.</p>
+      <div class="skill-tags">
+        <span class="tag">LLMs</span>
+        <span class="tag">Agents</span>
+        <span class="tag">Python</span>
+        <span class="tag">RAG</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal">
+      <span class="skill-icon">☀️</span>
+      <p class="skill-name">Solar Tech</p>
+      <p class="skill-desc">Engineering background in renewable energy. Clean power for a cleaner future.</p>
+      <div class="skill-tags">
+        <span class="tag">PV Systems</span>
+        <span class="tag">Energy</span>
+        <span class="tag">Sustainability</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal">
+      <span class="skill-icon">🧭</span>
+      <p class="skill-name">Leadership</p>
+      <p class="skill-desc">Leading data teams, steering technical direction as CTO — balancing vision with execution.</p>
+      <div class="skill-tags">
+        <span class="tag">Team Lead</span>
+        <span class="tag">CTO</span>
+        <span class="tag">Strategy</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal">
+      <span class="skill-icon">🔧</span>
+      <p class="skill-name">Maker / Electronics</p>
+      <p class="skill-desc">3D printing, circuits, and physical computing. Turning code into things you can hold.</p>
+      <div class="skill-tags">
+        <span class="tag">3D Print</span>
+        <span class="tag">Arduino</span>
+        <span class="tag">RPi</span>
+        <span class="tag">CAD</span>
+      </div>
+    </div>
+
+    <div class="skill-card reveal">
+      <span class="skill-icon">🎵</span>
+      <p class="skill-name">Renaissance Human</p>
+      <p class="skill-desc">Bach devotee. Space aesthetics. Two small humans who think he's superhuman.</p>
+      <div class="skill-tags">
+        <span class="tag">Classical Music</span>
+        <span class="tag">Dad×2</span>
+        <span class="tag">Curious</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     EXPERIENCE
+============================================================ -->
+<section id="experience">
+  <p class="section-label">Timeline</p>
+  <h2 class="section-title reveal">The path that<br>built this human.</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <p class="timeline-period">NOW</p>
+      <h3 class="timeline-role">CTO</h3>
+      <p class="timeline-company">Health AI Company</p>
+      <p class="timeline-desc">Co-founding and leading a startup applying AI to healthcare. From 0→1: building the product, the team, and the technical vision.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="timeline-period">CURRENT</p>
+      <h3 class="timeline-role">Data Engineer Lead</h3>
+      <p class="timeline-company">Real Estate Advertising Co.</p>
+      <p class="timeline-desc">Leading a data engineering team building the infrastructure that powers advertising intelligence — pipelines, platforms, and data products at scale.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="timeline-period">EARLIER</p>
+      <h3 class="timeline-role">Solar Engineer</h3>
+      <p class="timeline-company">Renewable Energy — Australia</p>
+      <p class="timeline-desc">Started the engineering journey under the southern sun. Designed and evaluated photovoltaic systems. The precision mindset stuck; the direction evolved.</p>
+    </div>
+
+    <div class="timeline-item">
+      <p class="timeline-period">ORIGIN</p>
+      <h3 class="timeline-role">Engineering Studies</h3>
+      <p class="timeline-company">University — Australia</p>
+      <p class="timeline-desc">Moved from China to study engineering in Australia. Developed a love of systems thinking, clean design, and making things work elegantly.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     PROJECTS
+============================================================ -->
+<section id="projects">
+  <p class="section-label">Side Quests</p>
+  <h2 class="section-title reveal">Things built for<br>the love of building.</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal" id="card-dealgents">
+      <div class="project-inner">
+        <div class="project-front">
+          <div class="project-bg">🤝</div>
+          <div class="project-front-content">
+            <p class="project-type">AI Product</p>
+            <h3 class="project-title-f">Dealgents</h3>
+            <p class="project-hint">[ tap to reveal ]</p>
+          </div>
+        </div>
+        <div class="project-back">
+          <div>
+            <p class="project-back-title">Dealgents</p>
+            <p class="project-back-desc">An AI-powered deal-scouting tool. Agents that find, evaluate, and surface opportunities — so humans can focus on decisions, not discovery.</p>
+            <a href="#" class="project-link" onclick="return false;">↗ Coming Soon</a>
+          </div>
+          <button class="flip-back-btn" onclick="flipCard('card-dealgents')">← Flip back</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal" id="card-openclaw">
+      <div class="project-inner">
+        <div class="project-front">
+          <div class="project-bg">🦀</div>
+          <div class="project-front-content">
+            <p class="project-type">Infra / Automation</p>
+            <h3 class="project-title-f">OpenClaw Setup</h3>
+            <p class="project-hint">[ tap to reveal ]</p>
+          </div>
+        </div>
+        <div class="project-back">
+          <div>
+            <p class="project-back-title">OpenClaw Home Lab</p>
+            <p class="project-back-desc">A personal AI agent infrastructure. Multiple specialized agents — Ducki, Pixel, Linus — collaborating on real tasks. The home that runs itself.</p>
+            <a href="https://github.com/HelloRicky" class="project-link">↗ GitHub</a>
+          </div>
+          <button class="flip-back-btn" onclick="flipCard('card-openclaw')">← Flip back</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal" id="card-3d">
+      <div class="project-inner">
+        <div class="project-front">
+          <div class="project-bg">⬡</div>
+          <div class="project-front-content">
+            <p class="project-type">Physical Computing</p>
+            <h3 class="project-title-f">3D Print Lab</h3>
+            <p class="project-hint">[ tap to reveal ]</p>
+          </div>
+        </div>
+        <div class="project-back">
+          <div>
+            <p class="project-back-title">The Print Lab</p>
+            <p class="project-back-desc">Designing and printing everything from functional parts to toys for the kids. FDM printing meets creative engineering — where ideas become objects overnight.</p>
+            <a href="#" class="project-link" onclick="return false;">↗ Gallery Soon</a>
+          </div>
+          <button class="flip-back-btn" onclick="flipCard('card-3d')">← Flip back</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     CONTACT
+============================================================ -->
+<section id="contact">
+  <p class="section-label">Connect</p>
+  <h2 class="section-title reveal">This human is<br>reachable.</h2>
+  <div class="contact-grid reveal">
+    <a href="https://linkedin.com/in/YOUR-LINKEDIN" class="contact-link" target="_blank" rel="noopener">
+      <span class="contact-icon">💼</span> LinkedIn
+    </a>
+    <a href="https://github.com/HelloRicky" class="contact-link" target="_blank" rel="noopener">
+      <span class="contact-icon">🐙</span> GitHub
+    </a>
+    <a href="mailto:your@email.com" class="contact-link">
+      <span class="contact-icon">✉️</span> Email
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Ricky Liu — Built with curiosity and caffeine.</p>
+  <p style="font-style:italic; font-family: var(--serif); color: var(--amber-dim); font-size: 0.8rem;">"The question is not who is going to let me; it is who is going to stop me."</p>
+</footer>
+
+<script>
+// ============================================================
+// CUSTOM CURSOR
+// ============================================================
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// ============================================================
+// STAR FIELD
+// ============================================================
+(function() {
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function mkStar() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.2,
+      o: Math.random() * 0.7 + 0.1,
+      speed: Math.random() * 0.15 + 0.02,
+      twinkle: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.02 + 0.005
+    };
+  }
+
+  function init() {
+    resize();
+    stars = Array.from({length: 200}, mkStar);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => {
+      s.twinkle += s.twinkleSpeed;
+      const o = s.o * (0.6 + 0.4 * Math.sin(s.twinkle));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(212, 221, 232, ${o})`;
+      ctx.fill();
+      // Scroll parallax
+      s.y -= s.speed * (1 + window.scrollY * 0.0003);
+      if (s.y < 0) { s.y = H; s.x = Math.random() * W; }
+    });
+    // Amber nebula glow
+    const grd = ctx.createRadialGradient(W * 0.75, H * 0.3, 0, W * 0.75, H * 0.3, W * 0.3);
+    grd.addColorStop(0, 'rgba(240,165,0,0.04)');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+})();
+
+// ============================================================
+// TYPEWRITER
+// ============================================================
+(function() {
+  const el = document.getElementById('typed');
+  const phrases = [
+    'lead data engineering teams',
+    'build AI products from zero',
+    'design solar energy systems',
+    'print things that don\'t exist yet',
+    'listen to Bach while shipping code',
+    'be a present father × 2',
+    'think in systems, build in public'
+  ];
+  let pi = 0, ci = 0, deleting = false;
+
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) {
+        deleting = true;
+        setTimeout(type, 2000);
+        return;
+      }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) {
+        deleting = false;
+        pi = (pi + 1) % phrases.length;
+        setTimeout(type, 300);
+        return;
+      }
+    }
+    setTimeout(type, deleting ? 40 : 70);
+  }
+
+  setTimeout(type, 1500);
+})();
+
+// ============================================================
+// FLIP CARDS
+// ============================================================
+window.flipCard = function(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('flipped');
+};
+
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    if (e.target.classList.contains('flip-back-btn') || e.target.classList.contains('project-link')) return;
+    this.classList.toggle('flipped');
+  });
+});
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+const revealEls = document.querySelectorAll('.reveal, .timeline-item');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const delay = el.dataset.delay || 0;
+      setTimeout(() => el.classList.add('visible'), delay);
+      io.unobserve(el);
+    }
+  });
+}, { threshold: 0.15 });
+
+revealEls.forEach((el, i) => {
+  el.dataset.delay = (i % 6) * 80;
+  io.observe(el);
+});
+
+// ============================================================
+// SKILL CARD GLOW ON MOUSE
+// ============================================================
+document.querySelectorAll('.skill-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
+    const y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1);
+    card.style.setProperty('--gx', `${x}%`);
+    card.style.setProperty('--gy', `${y}%`);
+    card.style.background = `radial-gradient(circle at ${x}% ${y}%, #16202c 0%, #111820 60%)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.background = '';
+  });
+});
+</script>
+</body>
+</html>
