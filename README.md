@@ -1,6 +1,6 @@
-# rickyliu.github.io
+# rickyzheng.github.io
 
-Personal site for Ricky Liu — **"What Can This Human Do?"**
+Personal site for Ricky Zheng — **"What Can This Human Do?"**
 
 Live at: [helloricky.github.io](https://helloricky.github.io)
 
