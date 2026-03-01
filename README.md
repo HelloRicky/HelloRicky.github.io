@@ -2,7 +2,7 @@
 
 Personal site for Ricky Zheng — **"What Can This Human Do?"**
 
-Live at: [helloricky.github.io](https://helloricky.github.io)
+🌐 **Live at: [ricky-zheng.com](https://ricky-zheng.com)** · also mirrored at [helloricky.github.io](https://helloricky.github.io)
 
 ---
 
