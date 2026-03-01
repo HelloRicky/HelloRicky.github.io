@@ -87,8 +87,6 @@ animateRing();
     'build AI products from zero',
     'design solar energy systems',
     'print things that don\'t exist yet',
-    'listen to Bach while shipping code',
-    'be a present father × 2',
     'think in systems, build in public'
   ];
   let pi = 0, ci = 0, deleting = false;
@@ -153,21 +151,28 @@ revealEls.forEach((el, i) => {
 });
 
 // ============================================================
-// SKILL CARD GLOW ON MOUSE
+// DYNAMIC FOOTER YEAR
 // ============================================================
-document.querySelectorAll('.skill-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width  * 100).toFixed(1);
-    const y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1);
-    card.style.setProperty('--gx', `${x}%`);
-    card.style.setProperty('--gy', `${y}%`);
-    card.style.background = `radial-gradient(circle at ${x}% ${y}%, #16202c 0%, #111820 60%)`;
+document.getElementById('copy-year').textContent = new Date().getFullYear();
+
+// ============================================================
+// JOURNEY CARD IMAGE CAROUSEL
+// ============================================================
+(function() {
+  const wraps = document.querySelectorAll('.journey-card-img-wrap');
+  wraps.forEach((wrap, wrapIdx) => {
+    const imgs = wrap.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    let current = 0;
+    setTimeout(() => {
+      setInterval(() => {
+        imgs[current].classList.remove('active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('active');
+      }, 3000);
+    }, wrapIdx * 600);
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.background = '';
-  });
-});
+})();
 
 // ============================================================
 // JOURNEY TRACK — DRAG TO SCROLL
@@ -206,4 +211,15 @@ document.querySelectorAll('.skill-card').forEach(card => {
       }
     });
   }
+})();
+
+// ============================================================
+// NAV LOGO — DYNAMIC TEXT ON SCROLL
+// ============================================================
+(function() {
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+  window.addEventListener('scroll', () => {
+    logo.textContent = window.scrollY <= 100 ? 'Hi! I am Ricky Zheng' : 'Ricky Zheng';
+  }, { passive: true });
 })();
