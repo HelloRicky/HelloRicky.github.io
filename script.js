@@ -223,3 +223,128 @@ document.getElementById('copy-year').textContent = new Date().getFullYear();
     logo.textContent = window.scrollY <= 100 ? 'Hi! I am Ricky Zheng' : 'Ricky Zheng';
   }, { passive: true });
 })();
+
+// ============================================================
+// MOBILE NAV TOGGLE
+// ============================================================
+(function () {
+  const toggle = document.querySelector('.nav-toggle');
+  const links  = document.querySelector('.nav-links');
+  if (!toggle || !links) return;
+
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
+// ============================================================
+// CONNECTION FLIGHT EASTER EGG
+// ============================================================
+(function () {
+  const scene  = document.querySelector('.connection-flight');
+  if (!scene) return;
+
+  const trailEl  = scene.querySelector('.flight-trail');
+  const rocketEl = scene.querySelector('.flight-rocket');
+  const pathEl   = scene.querySelector('.flight-path-bg');
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function showFinalState() {
+    const len = pathEl.getTotalLength();
+    const end = pathEl.getPointAtLength(len);
+    trailEl.style.strokeDasharray  = len;
+    trailEl.style.strokeDashoffset = '0';
+    rocketEl.style.left    = end.x / 800 * 100 + '%';
+    rocketEl.style.top     = end.y / 200 * 100 + '%';
+    rocketEl.style.opacity = '1';
+    rocketEl.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+    scene.querySelector('.flight-status').style.opacity = '1';
+  }
+
+  function runAnimation() {
+    const len   = pathEl.getTotalLength();
+    const svgEl = scene.querySelector('.flight-svg');
+
+    trailEl.style.strokeDasharray  = len;
+    trailEl.style.strokeDashoffset = len;
+
+    const DELAY    = 500;   // ms before rocket starts
+    const DURATION = 3000;  // ms for full flight
+    let startTime  = null;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime - DELAY;
+
+      if (elapsed < 0) {
+        requestAnimationFrame(step);
+        return;
+      }
+
+      const t = Math.min(elapsed / DURATION, 1);
+      const dist = t * len;
+
+      // Draw trail
+      trailEl.style.strokeDashoffset = len - dist;
+
+      // Position rocket
+      const pt  = pathEl.getPointAtLength(dist);
+      const pt2 = pathEl.getPointAtLength(Math.min(dist + 2, len));
+      const dx  = pt2.x - pt.x;
+      const dy  = pt2.y - pt.y;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+      // Convert SVG coords to % of container
+      const svgW = svgEl.clientWidth  || 800;
+      const svgH = svgEl.clientHeight || 200;
+      rocketEl.style.left      = (pt.x / 800 * svgW) + 'px';
+      rocketEl.style.top       = (pt.y / 200 * svgH) + 'px';
+      rocketEl.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        // Snap to final upright position
+        rocketEl.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  if (reducedMotion) {
+    // Observer still fires so we show final state on scroll
+    const obs = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.target.classList.contains('visible')) {
+          showFinalState();
+          obs.disconnect();
+          break;
+        }
+      }
+    });
+    obs.observe(scene, { attributes: true, attributeFilter: ['class'] });
+  } else {
+    const obs = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.target.classList.contains('visible')) {
+          runAnimation();
+          obs.disconnect();
+          break;
+        }
+      }
+    });
+    obs.observe(scene, { attributes: true, attributeFilter: ['class'] });
+  }
+})();

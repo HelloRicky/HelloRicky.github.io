@@ -119,6 +119,26 @@ nav {
 
 .nav-links a:hover { color: var(--amber); }
 
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--amber);
+  transition: transform 0.25s, opacity 0.25s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ============================================================
    HERO
 ============================================================ */
@@ -576,7 +596,7 @@ section {
 ============================================================ */
 #contact {
   text-align: left;
-  padding-bottom: 6rem;
+  padding-bottom: 4rem;
 }
 
 .contact-grid {
@@ -610,6 +630,135 @@ section {
 }
 
 .contact-icon { display: inline-flex; align-items: center; }
+
+/* ============================================================
+   CONNECTION FLIGHT EASTER EGG
+============================================================ */
+.connection-flight {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  margin-top: 3rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.connection-flight.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.flight-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 2;
+  padding-bottom: 0.5rem;
+}
+
+.flight-node-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 8px var(--amber);
+}
+
+.connection-flight.visible .flight-node-dot {
+  animation: nodePulse 2s ease-in-out infinite;
+}
+
+.flight-node-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.flight-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.flight-path-bg {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+}
+
+.flight-trail {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 4px var(--amber));
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+  opacity: 0;
+}
+
+.connection-flight.visible .flight-trail {
+  opacity: 1;
+}
+
+.flight-rocket {
+  position: absolute;
+  font-size: 1.6rem;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 6px var(--amber));
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.connection-flight.visible .flight-rocket {
+  opacity: 1;
+}
+
+.flight-status {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--amber);
+  opacity: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.connection-flight.visible .flight-status {
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 3.8s;
+}
+
+@keyframes nodePulse {
+  0%, 100% { transform: scale(1);   box-shadow: 0 0 8px var(--amber); }
+  50%       { transform: scale(1.4); box-shadow: 0 0 16px var(--amber); }
+}
+
+@media (max-width: 768px) {
+  .connection-flight { height: 200px; }
+  .flight-rocket      { font-size: 1.2rem; }
+}
+
+@media (max-width: 480px) {
+  .connection-flight { height: 160px; }
+  .flight-rocket      { font-size: 1rem; }
+}
 
 /* ============================================================
    FOOTER
@@ -779,10 +928,26 @@ body::before {
   }
   .journey-card { flex: 0 0 auto; width: 100%; }
   .journey-scroll-hint { display: none; }
+  .contact-grid { justify-content: space-between; }
+  .contact-link { flex: 1; justify-content: center; }
+  .contact-label { display: none; }
 }
 
 @media (max-width: 480px) {
-  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(8,12,16,0.97);
+    backdrop-filter: blur(8px);
+    padding: 1.5rem 2rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(240,165,0,0.12);
+  }
+  .nav-links.open { display: flex; }
   .portrait-frame { max-width: 180px; }
 }
 
@@ -982,19 +1147,6 @@ body::before {
   transform: scale(1.05);
 }
 
-.journey-img-scanline {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.06) 2px,
-    rgba(0,0,0,0.06) 4px
-  );
-  pointer-events: none;
-  z-index: 2;
-}
 
 .journey-badge {
   position: absolute;
