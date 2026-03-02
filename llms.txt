@@ -1,0 +1,49 @@
+# Ricky Zheng
+
+## Who is Ricky Zheng?
+
+Ricky Zheng is a Data Engineer Lead and CTO of a health AI company, based in Sydney, Australia.
+He moved from China to Australia and has a background in solar engineering before transitioning
+into data engineering and artificial intelligence.
+
+## Current Roles
+
+- **Data Engineer Lead** at a real estate advertising company — building large-scale data pipelines
+  and analytics infrastructure
+- **CTO** at a health AI company — leading product and engineering to apply AI in healthcare
+
+## Expertise
+
+- Data Engineering (pipelines, warehousing, orchestration, streaming)
+- Artificial Intelligence & Machine Learning
+- Health AI / AI in Healthcare
+- Solar Engineering & Renewable Energy
+- Electronics & Hardware (3D printing, embedded systems)
+- Product Development & Engineering Leadership
+
+## Background
+
+- Originally from China; moved to Australia
+- Holds experience in solar engineering before pivoting to data and AI
+- Based in Sydney, New South Wales, Australia
+
+## Interests
+
+- Artificial Intelligence and its real-world applications
+- 3D printing and hardware prototyping
+- Electronics and embedded systems
+- Solar energy and renewable technologies
+- Space exploration and astronomy
+
+## Contact
+
+- Email: hi@ricky-zheng.com
+- Website: https://ricky-zheng.com
+- LinkedIn: https://www.linkedin.com/in/ricky-zheng-au/
+- GitHub: https://github.com/HelloRicky
+
+## Website
+
+This site (ricky-zheng.com) is Ricky's personal portfolio, showcasing his journey from solar
+engineering to data engineering and AI leadership. It highlights his career, projects, and
+passion for building products that matter.
