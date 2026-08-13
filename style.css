@@ -443,6 +443,98 @@ section {
 }
 
 /* ============================================================
+   IDEAS SECTION — OPEN PROJECT INDEX
+============================================================ */
+#ideas {
+  background: linear-gradient(90deg, transparent, rgba(77,217,224,0.025), transparent);
+}
+
+.ideas-intro {
+  max-width: 43ch;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin: -1.5rem 0 2.5rem;
+}
+
+.ideas-list {
+  max-width: 920px;
+  border-top: 1px solid var(--border);
+}
+
+.idea-entry {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem 2rem 0;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+}
+
+.idea-entry:hover {
+  background: linear-gradient(90deg, var(--cyan-dim), transparent 72%);
+  border-color: rgba(77,217,224,0.45);
+  padding-left: 1rem;
+}
+
+.idea-number,
+.idea-label,
+.idea-action {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.idea-number { color: var(--cyan); }
+
+.idea-label {
+  color: var(--amber);
+  margin-bottom: 0.45rem;
+}
+
+.idea-copy h3 {
+  color: var(--text-bright);
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0.65rem;
+}
+
+.idea-copy > p:last-child {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  max-width: 48ch;
+}
+
+.idea-action {
+  color: var(--cyan);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  white-space: nowrap;
+}
+
+.idea-action span {
+  font-size: 1.2rem;
+  transition: transform 0.25s ease;
+}
+
+.idea-entry:hover .idea-action span { transform: translate(3px, -3px); }
+
+.idea-entry:focus-visible,
+.nav-links a:focus-visible,
+.contact-link:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 5px;
+}
+
+/* ============================================================
    PROJECTS SECTION — FLIP CARDS
 ============================================================ */
 .projects-grid {
@@ -931,6 +1023,8 @@ body::before {
   .contact-grid { justify-content: space-between; }
   .contact-link { flex: 1; justify-content: center; }
   .contact-label { display: none; }
+  .idea-entry { grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; }
+  .idea-action { grid-column: 2; }
 }
 
 @media (max-width: 480px) {

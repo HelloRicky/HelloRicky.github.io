@@ -43,6 +43,17 @@ Copy an existing `.project-card` block and change:
 - The `.project-link` href
 - The `flipCard('card-xyz')` call in the back button
 
+### Add a New Idea
+
+The personal homepage's **Ideas** section is a simple linked index for standalone pages and experiments. In `index.html`, find the `<!-- IDEA ENTRY -->` comment inside `#ideas`, then copy the `.idea-entry` block and update:
+
+- The visible number (for example, `02`)
+- `.idea-label` (project type and year)
+- The title and short description
+- The `href` and `aria-label` (for example, `/my-new-idea/`)
+
+The entry inherits its layout, reveal animation, hover effect, and mobile styling automatically—no JavaScript or CSS changes needed.
+
 ### Change Experience Entries
 
 Find `.timeline-item` blocks in the `#experience` section. Each has:
