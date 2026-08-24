@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101b31" />
+    <meta
+      name="description"
+      content="Chemist Warehouse FDE — a retail operations proof of concept linking physical store signals, actionable compliance work and evidence-led review."
+    />
+    <title>Chemist Warehouse FDE — Make the physical store actionable</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="Chemist Warehouse FDE overview, back to top">
+        <span class="brand-mark" aria-hidden="true">FDE</span>
+        <span>Chemist Warehouse<br />Field Work</span>
+      </a>
+      <nav aria-label="Overview navigation">
+        <a href="#system">The system</a>
+        <a href="#digital-store">Digital Store</a>
+        <a href="#document-compliance">Document Compliance</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <img
+          class="hero-image"
+          src="assets/images/nude-by-nature.jpg"
+          alt="A retail cosmetics bay with product facings, labels and shelf-edge pricing"
+          fetchpriority="high"
+        />
+        <div class="hero-wash" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow light">RETAIL OPERATIONS FDE · POC 01</p>
+          <h1 id="hero-title">MAKE THE<br /><em>PHYSICAL STORE</em><br />ACTIONABLE.</h1>
+          <p class="hero-lede">
+            A field-deployed product exploration for turning what happens on the shelf into the next useful action for a store team.
+          </p>
+          <a class="button button-light" href="#system">See the operating loop <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-foot" aria-label="Project scope">
+          <span>CHEMIST WAREHOUSE · MACARTHUR SQUARE</span>
+          <span>PHYSICAL SIGNALS → PROOF</span>
+        </div>
+      </section>
+
+      <section class="intro section-grid" id="system" aria-labelledby="gap-title">
+        <div class="section-label reveal">
+          <p class="eyebrow dark">THE OPERATING GAP</p>
+          <p class="index">01</p>
+        </div>
+        <div class="intro-copy reveal">
+          <h2 id="gap-title">The shelf, the instruction and the evidence should be part of the <em>same</em> operating loop.</h2>
+          <p>
+            A store manager needs to see what requires attention, understand where it is, turn an instruction into focused work, and know what evidence is enough to close it. Those moments are usually split across walk-throughs, documents and follow-up.
+          </p>
+          <p>
+            This FDE explores a practical alternative: connect physical context to area-based action, then make exceptions and proof visible without asking the team to manage another abstract dashboard.
+          </p>
+        </div>
+        <figure class="intro-image reveal">
+          <img src="assets/images/vitamins.jpg" alt="A vitamins shelf with product facings, shelf labels and several empty positions" loading="lazy" />
+          <figcaption>FIELD CONTEXT · THE SHELF AS AN OPERATING SIGNAL</figcaption>
+        </figure>
+      </section>
+
+      <section class="loop" aria-labelledby="loop-title">
+        <div class="loop-head reveal">
+          <p class="eyebrow light">ONE OPERATING LOOP</p>
+          <h2 id="loop-title">Observe the work.<br />Make the next move obvious.</h2>
+        </div>
+        <ol class="loop-steps">
+          <li class="reveal"><span>01</span><strong>Observe</strong><p>Use the physical store and approved retail imagery as context.</p></li>
+          <li class="reveal"><span>02</span><strong>Prioritise</strong><p>Make areas, gaps and exceptions easier to see.</p></li>
+          <li class="reveal"><span>03</span><strong>Act</strong><p>Translate instructions into the few actions relevant now.</p></li>
+          <li class="reveal"><span>04</span><strong>Verify</strong><p>Route proof and uncertainty to the right review point.</p></li>
+        </ol>
+      </section>
+
+      <section class="product product-digital" id="digital-store" aria-labelledby="digital-store-title">
+        <div class="product-media reveal">
+          <img src="assets/images/w7-cosmetics.jpg" alt="A densely stocked cosmetics bay with product facings and shelf-edge labels" loading="lazy" />
+          <p class="media-note">REAL RETAIL-BAY CONTEXT · NO PATIENT OR STAFF DATA</p>
+        </div>
+        <div class="product-copy reveal">
+          <p class="eyebrow dark">01 · DIGITAL STORE</p>
+          <h2 id="digital-store-title">See the store as it is — not as a spreadsheet says it should be.</h2>
+          <p class="product-lede">
+            Digital Store is a responsive stock-management dashboard proof of concept. It brings a store map, retail-bay imagery and simulated vision-style findings together to focus attention on physical shelf gaps and planogram drift.
+          </p>
+          <dl class="capability-list">
+            <div><dt>PHYSICAL CONTEXT</dt><dd>Start with the bay, not a detached report.</dd></div>
+            <div><dt>AREA PRIORITY</dt><dd>Use a store map to make attention areas glanceable.</dd></div>
+            <div><dt>FUTURE PATH</dt><dd>Connect approved imagery to a non-clinical review workflow.</dd></div>
+          </dl>
+          <p class="disclosure">POC note: live metrics, findings and staffing data in the current demo are simulated. Data capture is out of scope.</p>
+          <button class="text-link" type="button" data-prototype="digital-store">Digital Store prototype <span aria-hidden="true">↗</span></button>
+        </div>
+      </section>
+
+      <section class="product product-compliance" id="document-compliance" aria-labelledby="document-compliance-title">
+        <div class="product-copy reveal">
+          <p class="eyebrow light">02 · DOCUMENT COMPLIANCE</p>
+          <h2 id="document-compliance-title">Turn a head-office document into area work a team can finish.</h2>
+          <p class="product-lede">
+            Document Compliance is a mobile-first run-sheet proof of concept. It reframes a monthly compliance calendar as area-based tasks, with the action, proof requirement and manager-review state in the same place.
+          </p>
+          <div class="proof-line" aria-label="Document compliance transformation">
+            <span>Source instruction</span><i aria-hidden="true">→</i><span>Area task</span><i aria-hidden="true">→</i><span>Proof &amp; review</span>
+          </div>
+          <p class="disclosure light-disclosure">Non-clinical only. The concept excludes patient information, prescription labels, queues and clinical decision-making.</p>
+          <button class="text-link light-link" type="button" data-prototype="document-compliance">Document Compliance prototype <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="compliance-visual reveal" aria-label="Illustration of the document compliance workflow">
+          <div class="paper paper-source"><span class="paper-kicker">SOURCE</span><strong>MONTHLY<br />INSTRUCTION</strong><small>Read once. Act by area.</small></div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="paper paper-task"><span class="paper-kicker">TODAY · AREA 04</span><strong>VERIFY<br />DISPLAY</strong><small>Proof required</small><b>OPEN</b></div>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <div class="paper paper-proof"><span class="paper-kicker">REVIEW</span><strong>PROOF<br />CAPTURED</strong><small>Manager exception queue</small><b>READY</b></div>
+        </div>
+      </section>
+
+      <section class="evidence-section section-grid" aria-labelledby="evidence-title">
+        <div class="section-label reveal">
+          <p class="eyebrow dark">FIELD PROOF</p>
+          <p class="index">03</p>
+        </div>
+        <div class="evidence-copy reveal">
+          <h2 id="evidence-title">The value is not digitising a document or counting a shelf. It is reducing the distance between <em>signal</em> and <em>action</em>.</h2>
+          <p>
+            These two product concepts can stand alone. Together, they illustrate an FDE approach: work alongside real operations, use only the evidence that is appropriate for the setting, and ship a workflow the people closest to the work can understand.
+          </p>
+        </div>
+        <figure class="evidence-image reveal">
+          <img src="assets/images/sun-care.jpg" alt="A retail sun-care shelf arranged in clear product rows with visible shelf labels" loading="lazy" />
+          <figcaption>NON-SENSITIVE RETAIL REFERENCE IMAGERY · OPERATIONAL CONTEXT, NOT CLINICAL DATA</figcaption>
+        </figure>
+      </section>
+
+      <section class="closing" aria-labelledby="closing-title">
+        <p class="eyebrow light">SCOPE BOUNDARY</p>
+        <h2 id="closing-title">A prototype should make the next question <em>sharper.</em></h2>
+        <p>
+          This is an independent portfolio proof of concept, not an official Chemist Warehouse product, partnership announcement or production deployment. It uses non-sensitive retail reference imagery and simulated operational states to test how a store team could move from observation to action with less friction.
+        </p>
+        <a class="button button-outline" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>CHEMIST WAREHOUSE FDE · RETAIL OPERATIONS PROOF OF CONCEPT</p>
+      <p>Non-sensitive retail reference imagery · No PHI · No patient-facing workflow</p>
+    </footer>
+    <div class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
