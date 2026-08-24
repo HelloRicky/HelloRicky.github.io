@@ -1277,6 +1277,10 @@ body::before {
   letter-spacing: 0.25em;
   color: var(--amber);
   text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.journey-meta .journey-year {
   margin: 0;
 }
 
