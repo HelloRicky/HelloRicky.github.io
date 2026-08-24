@@ -1262,38 +1262,13 @@ body::before {
   padding: 1.5rem;
 }
 
-.journey-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  min-height: 1.125rem;
-  margin-bottom: 0.4rem;
-}
-
 .journey-year {
   font-family: var(--mono);
   font-size: 0.6rem;
   letter-spacing: 0.25em;
   color: var(--amber);
   text-transform: uppercase;
-  margin: 0;
-}
-
-.journey-logo {
-  display: block;
-  flex: 0 0 auto;
-  width: auto;
-  height: 1rem;
-  max-width: 6.25rem;
-  object-fit: contain;
-  object-position: right center;
-  opacity: 0.8;
-}
-
-.journey-logo--facebook {
-  height: 1.125rem;
-  max-width: 1.125rem;
+  margin-bottom: 0.4rem;
 }
 
 .journey-title {
