@@ -2,15 +2,14 @@
 
 ## Who is Ricky Zheng?
 
-Ricky Zheng is a Data Engineer Lead and CTO of a health AI company, based in Sydney, Australia.
+Ricky Zheng is a Director of AI Engineering and CTO of a healthcare AI company, based in Sydney, Australia.
 He moved from China to Australia and has a background in solar engineering before transitioning
 into data engineering and artificial intelligence.
 
 ## Current Roles
 
-- **Data Engineer Lead** at a real estate advertising company — building large-scale data pipelines
-  and analytics infrastructure
-- **CTO** at a health AI company — leading product and engineering to apply AI in healthcare
+- **Director of AI Engineering and CTO** at a healthcare AI company — leading product and
+  engineering to apply AI in healthcare
 
 ## Expertise
 
